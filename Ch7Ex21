@@ -1,0 +1,17 @@
+import re
+
+pattern = re.compile(r"""
+    ^                   # Start of the string
+    [A-Z][aA-zZ]+         # First name: one or more alphabetic characters starting with a capital letter
+    \s                  # Whitespace between first and last name
+    Watanabe            # Last name: 'Watanabe' (case insensitive)
+    $                   # End of the string
+""", re.VERBOSE)
+
+# Example usage
+names = ['Haruto Watanabe', 'Alice Watanabe', 'RoboCop Watanabe', 'haruto Watanabe', 'Mr. Watanabe', 'Watanabe', 'Haruto watanabe']
+for name in names:
+    if pattern.match(name):
+        print(f"'{name}' matches")
+    else:
+        print(f"'{name}' does not match")
