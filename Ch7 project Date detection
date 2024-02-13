@@ -1,0 +1,46 @@
+import re
+
+date_regex = re.compile(r"""
+        (?P<day>31|(?:0[1-9]|[1-2][0-9]))/             # days
+        (?P<month>1[0-2]|0[1-9])/                      # months range from 01 to 12
+        (?P<year>                                      # year
+        (?:1[0-9]{3})                                  # Matches years from 1000 to 1999
+      |                                                # OR
+        (?:[2-9][0-9]{3})                              # Matches years from 2000 to 9999
+    )
+""", re.VERBOSE)
+
+
+def is_valid_date(day, month, year):
+    # Check if month has 30 days
+    if month in ['04', '06', '09', '11']:
+        return day <= 30
+    # Check if month has 31 days
+    elif month in ['01', '03', '05', '07', '08', '10', '12']:
+        return day <= 31
+    # Check for February
+    else:
+        # Check for leap year
+        if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
+            return day <= 29
+        else:
+            return day <= 28
+
+
+# Prompt the user to input a date in the specified format
+user_date = input("Put a date in DD/MM/YYYY format: ")
+
+# Match the user input with the regular expression
+match = date_regex.match(user_date)
+
+if match:
+    day = int(match.group('day'))
+    month = match.group('month')
+    year = int(match.group('year'))
+
+    if is_valid_date(day, month, year):
+        print("Valid date!")
+    else:
+        print("Invalid date.")
+else:
+    print("Invalid date format.")
